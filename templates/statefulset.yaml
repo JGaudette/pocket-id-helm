@@ -58,7 +58,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: {{ include "pocket-id.fullname" . }}-data
-              mountPath: /app/backend/data
+              # pocket-id >= v1 keeps its data in /app/data; mounting /app/backend/data
+              # left the live DB on the container's writable layer.
+              mountPath: /app/data
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
